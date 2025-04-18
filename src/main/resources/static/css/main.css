@@ -1,0 +1,341 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    flex-direction: column;
+}
+
+.chat-container {
+    display: flex;
+    max-width: 800px;
+    min-width: 800px;
+    min-height: 600px;
+    max-height: 600px;
+    margin: 20px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.users-list {
+    flex: 1;
+    border-right: 1px solid #ccc;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: #5a6c79;
+    color: #fff;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+
+
+------------------------------------------
+/* Base container for sidebar */
+.users-list-container {
+    background-color: #3f5c6d;
+    padding: 20px 15px;
+    color: white;
+    font-family: 'Segoe UI', sans-serif;
+    height: 100%;
+    overflow-y: auto;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+}
+
+/* App title */
+.users-list-container h1 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* Menu button group */
+.menu-buttons {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.menu-buttons button {
+    background-color: #f1f1f1;
+    color: #333;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.menu-buttons button:hover {
+    background-color: #ddd;
+}
+
+/* Section title */
+.users-list-container h3 {
+    margin-top: 25px;
+    margin-bottom: 8px;
+    font-size: 16px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
+}
+
+/* List styling */
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+ul li {
+    padding: 6px 10px;
+    margin: 4px 0;
+    background-color: #4f6b7a;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    cursor: pointer;
+}
+
+ul li:hover {
+    background-color: #6f8ea1;
+}
+
+
+
+.hidden {
+    display: none;
+}
+<--end here-->
+
+-----------------------------------------------------
+<-- group css-->
+.group-item {
+   display: flex;
+    align-items: center;
+    padding: 10px;
+    margin: 6px 0;
+    cursor: pointer;
+    background-color: #4f6b7a;
+    border-radius: 6px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+.group-item:hover {
+    background-color: #6f8ea1;
+    transform: scale(1.02);
+}
+
+.group-item img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    margin-right: 12px;
+    border: 2px solid #fff;
+}
+.group-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.group-info .creator {
+    font-size: 0.85em;
+    color: #ddd;
+}
+
+.group-info .created-at {
+    font-size: 0.75em;
+    color: #aaa;
+}
+
+<-- end group -->
+
+.users-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.user-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    cursor: pointer;
+    padding: 10px;
+    background-color: #4f6b7a;
+    border-radius: 5px;
+    transition: background-color 0.2s ease-in-out;
+}
+.user-item:hover {
+    background-color: #6f8ea1;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+
+.user-item.active {
+    background-color: #cdebff !important;
+    color: #2c3e50;
+    font-weight: bold;
+}
+
+
+
+.user-item .last-message {
+    color: #ddd;
+    font-size: 13px;
+    font-style: italic;
+    margin-top: 4px;
+}
+
+.user-item img {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    margin-right: 12px;
+    border: 2px solid #ddd;
+}
+.user-item span.nbr-msg {
+    background-color: #e74c3c;
+    color: white;
+    font-size: 0.75em;
+    padding: 4px 8px;
+    border-radius: 12px;
+    margin-left: 8px;
+    align-self: center;
+}
+
+.user-item span {
+    font-weight: bold;
+}
+
+.separator {
+    height: 1px;
+    background-color: #ccc;
+    margin: 10px 0;
+}
+
+.chat-area {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-sizing: border-box;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.message {
+    margin-bottom: 5px;
+    border-radius: 5px;
+}
+
+#chat-messages {
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+}
+
+.message p {
+    padding: 0 12px;
+    border-radius: 15px;
+    word-wrap: break-word;
+}
+
+.user-item span.nbr-msg {
+    margin-left: 34px;
+    background-color: #80fa6f;
+    color: white;
+    padding: 8px;
+    width: 10px;
+    border-radius: 21%;
+    height: 17px;
+}
+
+.sender {
+    background-color: #34db56;
+    color: #fff;
+    align-self: flex-end;
+}
+
+.receiver {
+    background-color: #7cb7df;
+    color: #333;
+    align-self: flex-start;
+}
+
+.message-input {
+    margin-top: auto;
+    display: flex;
+}
+
+.message-input input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #34db56;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.message-input button {
+    padding: 10px;
+    border: none;
+    background-color: #34db56;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.user-form {
+    max-width: 400px;
+    padding: 40px;
+    box-sizing: border-box;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.user-form h2 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.user-form label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.user-form input {
+    width: 100%;
+    padding: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.user-form button {
+    padding: 12px;
+    border: none;
+    background-color: #3498db;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.hidden {
+    display: none;
+}
+
+a.logout {
+    color: #fff;
+    text-decoration: none;
+}

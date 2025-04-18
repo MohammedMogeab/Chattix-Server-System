@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Application</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+<h1>Welcome, <span id="username-display">User</span>!</h1>
+
+<div class="chat-container" id="chat-page">
+    <div class="users-list">
+        <div class="users-list-container">
+            <h2>Zchat</h2>
+            <div class="menu-buttons">
+                <button id="showUsersBtn">Users</button>
+                <button id="showGroupsBtn">Groups</button>
+                <button id="showOthersBtn">Others</button>
+            </div>
+
+            <div id="usersListSection">
+                <h3>Users</h3>
+                <ul id="connectedUsers"></ul>
+            </div>
+
+            <div id="groupsListSection" class="hidden">
+                <h3>Groups</h3>
+                <ul id="connectedGroups"></ul>
+            </div>
+
+            <div id="othersListSection" class="hidden">
+                <h3>Others</h3>
+                <ul id="othersList">
+                    <li>Settings</li>
+                    <li>Logs</li>
+                </ul>
+            </div>
+        </div>
+
+        <div>
+            <p id="connected-user-fullname"></p>
+            <a class="logout" href="javascript:void(0)" id="logout">Logout</a>
+        </div>
+    </div>
+
+    <div class="chat-area">
+        <div class="chat-area" id="chat-messages"></div>
+
+        <form id="messageForm" name="messageForm" class="hidden">
+            <div class="message-input">
+                <input autocomplete="off" type="text" id="message" placeholder="Type your message...">
+                <button type="submit">Send</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- JS for tab switching -->
+<script>
+    document.querySelectorAll('.tab-button').forEach(button => {
+        button.addEventListener('click', () => {
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active-tab'));
+
+            const selectedTabId = button.getAttribute('data-tab') + '-tab';
+            document.getElementById(selectedTabId).classList.add('active-tab');
+        });
+    });
+
+    // Set username from local storage or fetch from backend
+    const username = localStorage.getItem('username') || 'Guest';
+    document.getElementById('username-display').textContent = username;
+</script>
+
+<!-- WebSocket and Main Chat Logic -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
