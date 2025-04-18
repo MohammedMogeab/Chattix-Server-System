@@ -1,0 +1,1 @@
+![Chattix Logo](logo.png)
