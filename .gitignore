@@ -30,7 +30,6 @@ build/
 !**/src/test/**/build/
 # Ignore everything in all resources folders
 **/src/main/resources/**
-
 # But DO NOT ignore these specific files
 !**/src/main/resources/application.properties
 !**/src/main/resources/application.yml
