@@ -8,6 +8,6 @@ RUN mvn clean install
 # Stage 2: Run the application
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
-COPY --from=build /app/target/chatwebsite-0.0.1-SNAPSHOT.jar ./demo-aws.jar
+COPY --from=build /app/target/chatwebsite-0.0.1-SNAPSHOT.jar ./Chattix.jar
 EXPOSE 8080
-CMD ["java", "-jar", "demo-aws.jar"]
+CMD ["java", "-jar", "Chattix.jar"]

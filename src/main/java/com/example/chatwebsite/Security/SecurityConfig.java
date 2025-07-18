@@ -35,12 +35,26 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception {
       return http.
               csrf(AbstractHttpConfigurer::disable)
+//              .csrf(csrf -> csrf
+//                      .ignoringRequestMatchers("/ws/**") // Disable CSRF for WebSocket handshake
+//              )
               .authorizeHttpRequests(request ->
 
-                      request.requestMatchers("/login", "/register", "/oauth2/**", "/favicon.ico").permitAll()
+                      request.requestMatchers("/login", "/register",
+                                      "/oauth2/**", "/favicon.ico","/auth/refresh-token","/api/upload").permitAll()
                               .requestMatchers("/oauth2/success").permitAll()
-                              .requestMatchers( "/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**").permitAll()
-                              .anyRequest().authenticated()
+                              .requestMatchers("/ws").permitAll()
+                              .requestMatchers("/ws-native").permitAll()
+                              .requestMatchers("/ws/**").permitAll()
+                              .requestMatchers(
+                                      "/v3/api-docs/**",
+                                      "/swagger-ui/**",
+                                      "/swagger-ui.html",
+                                      "/swagger-resources/**",
+                                      "/webjars/**",
+                                      "/favicon.ico",
+                                      "/error"
+                              ).permitAll()                              .anyRequest().authenticated()
 
               )
               .oauth2Login(oauth2 -> oauth2

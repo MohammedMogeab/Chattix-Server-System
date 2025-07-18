@@ -4,10 +4,9 @@ import com.example.chatwebsite.Controller.GroupMessageDTO;
 import com.example.chatwebsite.Controller.MessageDTO;
 import com.example.chatwebsite.Service.GroupChatService;
 import com.example.chatwebsite.Service.UserService;
-import com.example.chatwebsite.model.GroupChat;
-import com.example.chatwebsite.model.Message;
+import com.example.chatwebsite.model.*;
 import com.example.chatwebsite.Service.MessageService;
-import com.example.chatwebsite.model.User;
+import io.jsonwebtoken.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,6 +27,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -63,12 +65,16 @@ public class ChatController {
         message.setSender(sender);
         message.setRecipient(recipient);
         message.setSentAt(LocalDateTime.now());
+        message.setType("text");
         messageService.saveMessage(message);
 
 //        messageService.saveMessage(message);
         System.out.println("Sending message to: " + messageDTO.getRecipientUsername());
         messagingTemplate.convertAndSendToUser(messageDTO.getRecipientUsername(),"/queue/messages",messageDTO);
     }
+
+
+
 
     @PreAuthorize("#username==authentication.name")
     @GetMapping("/list/{username}")
@@ -80,7 +86,7 @@ public class ChatController {
 //                    .body(Map.of("status", 403, "message", "Access denied"));
 //        }
 
-        List<ChatDTO> chatList = chatService.getChatList(username);
+        List<FriendList> chatList = chatService.getChatList(username);
         return ResponseEntity.ok(Map.of(
                 "status", 200,
                 "message", "Chat list retrieved successfully",
@@ -93,10 +99,10 @@ public class ChatController {
         return auth != null ? auth.getName() : null;
     }
 
-     @PreAuthorize("#userUsername == authentication.name")
-    @GetMapping("/messages/{userUsername}/{chatUserId}")
-    public List<Message> getChatMessages(@PathVariable String  userUsername, @PathVariable Long chatUserId) {
-    return chatService.getChatMessages(userUsername,chatUserId);
+     @PreAuthorize("#userUsername == principal.userId")
+    @GetMapping("/messages/{userUsername}/{userFriend}")
+    public List<MessageFriendDTO> getChatMessages(@PathVariable Long  userUsername, @PathVariable Long  userFriend) {
+    return chatService.getChatMessages(userUsername,userFriend);
     }
 
     @GetMapping("/group-messages/{groupId}")
@@ -121,6 +127,39 @@ public class ChatController {
 
         messagingTemplate.convertAndSend("/topic/group-" + group.getGroupId(), messageDTO);
     }
+
+    @MessageMapping("/sendPrivateImage")
+    public void sendPrivateImage(@Payload MessageDTO messageDTO) {
+        System.out.println("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
+        System.out.println("📷 Received image message: " + messageDTO);
+        String destination = "/user/" + messageDTO.getRecipientUsername() + "/queue/messages";
+
+        User sender = userService.getUserByUsername(messageDTO.getSenderUsername())
+                .orElseThrow(() -> new RuntimeException("Sender not found"));
+        User recipient = userService.getUserByUsername(messageDTO.getRecipientUsername())
+                .orElseThrow(() -> new RuntimeException("Recipient not found"));
+
+        Message message = new Message();
+        message.setContent(messageDTO.getContent()); // this is the image URL
+        // add a type field to Message entity
+        message.setSender(sender);
+        message.setRecipient(recipient);
+        message.setSentAt(LocalDateTime.now());
+        message.setType("image");
+        messageService.saveMessage(message);
+
+        messagingTemplate.convertAndSendToUser(
+                messageDTO.getRecipientUsername(),
+                "/queue/messages",
+                messageDTO
+        );
+
+    }
+
+
+
+
+
 
 //    @GetMapping("/user/{username}/groups")
 //    public ResponseEntity<List<GroupChat>> getUserGroups(@PathVariable String username) {
@@ -198,6 +237,8 @@ public class ChatController {
 //            System.out.println("Error: Recipient not found!");
 //        }
 //    }
+
+
 
 
 

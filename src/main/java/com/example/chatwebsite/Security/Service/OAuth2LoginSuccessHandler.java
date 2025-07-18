@@ -30,7 +30,9 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
 
 
+
         Optional<User> userOptional = userRepository.findByEmail(email);
+        int userId =userOptional.get().getUserId();
         System.out.println(email);
 
 
@@ -40,8 +42,8 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
             return;
         }
 
-        String token = jwtService.generateTokern(email);
-        String refreshToken = jwtService.generateRefreshToken(email);
+        String token = jwtService.generateTokern(email,userId);
+        String refreshToken = jwtService.generateRefreshToken(email,userId);
 
 
         // Send as HttpOnly Cookies

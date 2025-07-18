@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Service("securityUserService")
@@ -57,8 +58,12 @@ public class UserService {
         );
 
         if (authentication.isAuthenticated()) {
-            String accessToken = jwtService.generateTokern(users.getUsername());
-            String refreshToken = jwtService.generateRefreshToken(users.getUsername());
+            Optional<User> realUser = userRepo.findByUsername(users.getUsername());
+
+            System.out.println("verified: " +    realUser.get().getUserId()); // This will be correct now
+
+            String accessToken = jwtService.generateTokern(users.getUsername(),realUser.get().getUserId());
+            String refreshToken = jwtService.generateRefreshToken(users.getUsername(), realUser.get().getUserId());
             return new AuthResponse(accessToken, refreshToken);
         }
 

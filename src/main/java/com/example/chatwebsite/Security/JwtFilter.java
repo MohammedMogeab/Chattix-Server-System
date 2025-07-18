@@ -27,7 +27,7 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String path = request.getServletPath();
-        if (path.equals("/login") || path.equals("/register") || path.equals("/refresh-token")) {
+        if (path.equals("/login") || path.equals("/register") || path.equals("/refresh-token") || path.startsWith("/ws") || path.startsWith("/ws-native") || path.startsWith("/auth/refresh-token") || path.startsWith("/api/upload"))  {
             filterChain.doFilter(request, response);
             return;
         }

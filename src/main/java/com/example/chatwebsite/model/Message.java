@@ -35,5 +35,7 @@ public class Message {
     @Column(nullable = false)
     private String content;
 
+    private String Type;
+
     private LocalDateTime sentAt = LocalDateTime.now();
 }

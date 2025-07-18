@@ -1,23 +1,37 @@
 package com.example.chatwebsite.Config;
 
+import com.example.chatwebsite.Repositry.UserRepositry;
 import com.example.chatwebsite.Security.Service.AuthResponse;
+import com.example.chatwebsite.Security.Service.JWTService;
 import com.example.chatwebsite.Security.Service.UserService;
 import com.example.chatwebsite.model.User;
+import io.jsonwebtoken.io.IOException;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.Principal;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 public class LoginController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserRepositry userRepositry;
+
+    @Autowired
+    private JWTService jwtService;
 
 //    @GetMapping("/login")
 //    public String login(Principal principal, Model model, @RequestParam(value = "error", required = false) String error,
@@ -77,4 +91,22 @@ public class LoginController {
         System.out.println(users.getEmail());
         return userService.register(users);
     }
+
+    @PostMapping("/api/upload")
+    public ResponseEntity<String> uploadImage(@RequestBody byte[] fileBytes,
+                                              @RequestHeader("Authorization") String token) throws IOException, java.io.IOException {
+        // Validate token manually if needed
+        String uploadDir = "uploads/";
+        Files.createDirectories(Paths.get(uploadDir));
+        String filename = UUID.randomUUID() + ".jpg";
+        Path path = Paths.get("uploads/" + filename);
+        System.out.println("Saving file to: " + path.toAbsolutePath());
+
+        Files.write(path, fileBytes);
+        String imageUrl = "http://localhost:8087/uploads/" + filename;
+        System.out.println("image url: " + imageUrl );
+        return ResponseEntity.ok(imageUrl);
+    }
+
+
 }

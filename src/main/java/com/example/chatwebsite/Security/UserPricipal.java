@@ -20,6 +20,10 @@ private User users;
         return Collections.singleton(new SimpleGrantedAuthority("USER"));
     }
 
+    public int  getUserId() {
+        return  users.getUserId();
+    }
+
     @Override
     public String getPassword() {
         return users.getPassword();
