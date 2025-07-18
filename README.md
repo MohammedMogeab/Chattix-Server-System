@@ -29,6 +29,10 @@ ZChat's server is designed using the **Backend-for-Frontend (BFF)** architectura
 - **Scalability:** Easily extend support to new platforms (e.g., mobile apps) without major backend changes.
 - **Consistent experience:** All clients benefit from unified business rules and data models.
 
+## Architecture Diagram
+
+![Architecture Diagram](img.png)
+
 ## Features
 
 - Real-time messaging with WebSocket
